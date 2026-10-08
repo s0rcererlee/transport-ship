@@ -1,0 +1,17 @@
+[Unit]
+Description=Transport ship public HTTPS tunnel
+After=network-online.target nginx.service
+Wants=network-online.target
+[Service]
+User=nobody
+Environment=HOME=/tmp
+Environment=HTTPS_PROXY=http://127.0.0.1:7890
+ExecStart=/usr/local/bin/transport-cloudflared tunnel --url http://127.0.0.1:20939 --protocol http2 --no-autoupdate
+Restart=always
+RestartSec=10
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+[Install]
+WantedBy=multi-user.target
